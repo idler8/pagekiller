@@ -1,0 +1,19 @@
+{
+	"name": "pagekiller",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "rollup -c"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"rollup": "^2.25.0",
+		"rollup-plugin-terser": "^7.0.0"
+	},
+	"devDependencies": {
+		"rollup-plugin-serve": "^1.0.3"
+	}
+}
