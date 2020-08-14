@@ -1,9 +1,9 @@
-import { Event } from '../app/index.js';
-export default class Scene extends Event {
+import APP from '../app/index.js';
+export default class Scene extends APP.Container {
 	constructor() {
 		super();
-		this.on(Event.ADD_TO_STAGE, this.onAddToStage);
-		this.on(Event.CHECK_KEY_STATE, this.onCheckKeyState);
+		APP.event.on(APP.Event.ADD_TO_STAGE, this.onAddToStage);
+		APP.event.on(APP.Event.CHECK_KEY_STATE, this.onCheckKeyState);
 	}
 	onAddToStage(evt, world) {
 		console.log('场景开始了');

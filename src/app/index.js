@@ -1,15 +1,9 @@
-import * as Run from './libs/build.js';
+import * as Util from './libs/build.js';
 import Event from './libs/event.js';
-import keyState from './libs/event.js';
-class Container {
-	constructor() {
-		this.children = [];
-	}
-	add(stage) {
-		this.children.push(stage);
-		this.willSort = true;
-	}
-}
-const stage = new Container();
+import Container from './libs/container.js';
+import keyState from './libs/keyboard.js';
+
 const event = new Event();
-export { Run, Event, keyState, Container, stage, event };
+const stage = new Container();
+const APP = { Util, Event, keyState, Container, stage, event };
+export default APP;
