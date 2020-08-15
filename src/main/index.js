@@ -1,14 +1,14 @@
-import APP from '../app/index.js';
-export default class Scene extends APP.Container {
+import { Container } from '../app/index.js';
+import stage from '../stage.js';
+import Player from './player.js';
+export default class Scene extends Container {
 	constructor() {
 		super();
-		APP.event.on(APP.Event.ADD_TO_STAGE, this.onAddToStage);
-		APP.event.on(APP.Event.CHECK_KEY_STATE, this.onCheckKeyState);
+		stage.node(this, stage);
+		stage.node(new Player(), this);
 	}
-	onAddToStage(evt, world) {
-		console.log('场景开始了');
-	}
-	onCheckKeyState(evt, world) {
-		console.log('检查按键状态');
+	render(context) {
+		context.fillStyle = 'blue';
+		context.fillRect(this.x, this.y, 40, 40);
 	}
 }

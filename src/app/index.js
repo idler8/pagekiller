@@ -17,36 +17,19 @@ class Container {
 		this.needUpdate = false; //是否需要更新矩阵
 	}
 }
-//id:{定位/旋转/缩放/矩阵/绘制函数/销毁函数/父ID/子元素数组}
-class Renderer {
-	constructor() {
-		this.canvas = document.createElement('canvas');
-		this.context = this.canvas.getContext('2d');
-		window.addEventListener('resize', () => this.resize(this.canvas));
-		this.resize(this.canvas);
-	}
-	resize(canvas) {
-		canvas.style.position = 'absolute';
-		canvas.style.top = canvas.style.left = 0;
-		canvas.style.width = canvas.style.height = '100%';
-		canvas.width = document.body.clientWidth;
-		canvas.height = document.body.clientHeight;
-	}
-}
 class Stage {
-	constructor(render, rootContainer) {
+	constructor(rootContainer) {
 		this.id = rootContainer.id;
-		this.render = render;
 		this.nodes = { [this.id]: rootContainer };
 		this.renderNodes = [];
 		this.needUpdate = true; //是否需要整理渲染数组
+		this.nodeNeedUpdate = true; //存在需要重算的矩阵
 	}
 	onNodeChange(id, key, value) {
 		let node = this.nodes[id];
 		if (!node) return;
 		let historyValue = node[key];
 		if (historyValue == value) return;
-		node[key] = value;
 		if (key == 'pid') {
 			let historyParent = this.nodes[historyValue];
 			if (historyParent) {
@@ -57,43 +40,64 @@ class Stage {
 			let parent = this.nodes[value];
 			if (parent) {
 				parent.children.push(id);
+				node[key] = value;
 				this.needUpdate = true;
 			}
 		} else if (key == 'needUpdate') {
+			node[key] = value;
 			node.children.forEach((child) => this.onNodeChange(child, 'needUpdate', true));
+		} else {
+			node[key] = value;
 		}
 		this.onNodeChange(id, 'needUpdate', true);
+		this.nodeNeedUpdate = true;
 	}
-	add(node, parent = 0) {
-		console.log('appNode', node.id);
+	node(node, parent = 0) {
+		let pid = parent.id || parent;
 		let { nodes } = this;
 		let { id } = node;
 		nodes[id] = node;
-		this.onNodeChange(id, 'pid', parent.id || parent);
+		this.onNodeChange(id, 'pid', pid);
+		//注意：不在屏幕上的parent不能被感知到
+		console.log('appNode', id, pid);
+		return node;
+	}
+	kill(node) {
+		let id = node.id || node;
+		if (id == this.id || !this.nodes[id]) return;
+		this.onNodeChange(id, 'pid', 0);
+		delete this.nodes[id];
 	}
 	onRenderNodesCheck(id, renderNodes = []) {
 		let { nodes } = this;
 		if (!nodes[id]) return;
 		renderNodes.push(id);
-		nodes[id].children.forEach((child) => {
-			this.onRenderNodesCheck(child, renderNodes);
-		});
+		let { children } = nodes[id];
+		for (let i = 0, len = children.length; i < len; i++) {
+			this.onRenderNodesCheck(children[i], renderNodes);
+		}
 	}
 	onStep() {
-		let { nodes, needUpdate } = this;
+		let { nodes, needUpdate, nodeNeedUpdate } = this;
 		if (needUpdate) {
+			console.log('更新渲染节点');
 			this.needUpdate = false;
 			let renderNodes = [];
 			this.onRenderNodesCheck(this.id, renderNodes);
 			this.renderNodes = renderNodes;
 		}
-		this.renderNodes.forEach(function (id) {
-			let node = nodes[id];
-			if (!node) return;
-			if (!node.needUpdate) return;
-			node.needUpdate = false;
-			//TODO 计算需要计算矩阵的节点
-		});
+		if (nodeNeedUpdate) {
+			console.log('更新节点矩阵');
+			this.nodeNeedUpdate = false;
+			//TODO 拆分重算数组
+			for (let i = 0, len = this.renderNodes.length; i < len; i++) {
+				let node = nodes[this.renderNodes[i]];
+				if (!node) return;
+				if (!node.needUpdate) return;
+				node.needUpdate = false;
+				//TODO 计算需要计算矩阵的节点
+			}
+		}
 	}
 }
-export { Container, Renderer, Stage };
+export { Container, Stage };

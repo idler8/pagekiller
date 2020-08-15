@@ -1,10 +1,11 @@
-import APP from '../app/index.js';
-export default class Player extends APP.Container {
+import { Container } from '../app/index.js';
+import stage from '../stage.js';
+export default class Player extends Container {
 	constructor() {
 		super();
-		APP.event.on(APP.Event.ADD_TO_STAGE, this.onAddToStage);
 	}
-	onAddToStage(evt, world) {
-		console.log('我被添加到了场景');
+	render(context) {
+		context.fillStyle = 'yellow';
+		context.fillRect(this.x, this.y, 40, 40);
 	}
 }
