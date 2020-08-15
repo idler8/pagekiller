@@ -1,16 +1,4 @@
-export function build(canvas) {
-	document.body.appendChild(canvas);
-	let resize = function () {
-		canvas.style.position = 'absolute';
-		canvas.style.top = canvas.style.left = 0;
-		canvas.style.width = canvas.style.height = '100%';
-		canvas.width = document.body.clientWidth;
-		canvas.height = document.body.clientHeight;
-	};
-	window.addEventListener('resize', () => resize(canvas));
-	resize(canvas);
-}
-export function frame(callback, fps = 60) {
+export default function (callback, fps = 60) {
 	let requestAnimaFrame =
 		window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
