@@ -54,7 +54,6 @@ class Stage {
 				if (index !== -1) historyParent.children.splice(index, 1);
 				this.needUpdate = true;
 			}
-			//TODO 0和移除
 			let parent = this.nodes[value];
 			if (parent) {
 				parent.children.push(id);
@@ -81,11 +80,20 @@ class Stage {
 		});
 	}
 	onStep() {
-		if (!this.needUpdate) return;
-		this.needUpdate = false;
-		let renderNodes = [];
-		this.onRenderNodesCheck(this.id, renderNodes);
-		this.renderNodes = renderNodes;
+		let { nodes, needUpdate } = this;
+		if (needUpdate) {
+			this.needUpdate = false;
+			let renderNodes = [];
+			this.onRenderNodesCheck(this.id, renderNodes);
+			this.renderNodes = renderNodes;
+		}
+		this.renderNodes.forEach(function (id) {
+			let node = nodes[id];
+			if (!node) return;
+			if (!node.needUpdate) return;
+			node.needUpdate = false;
+			//TODO 计算需要计算矩阵的节点
+		});
 	}
 }
 export { Container, Renderer, Stage };
