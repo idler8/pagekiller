@@ -6,8 +6,4 @@ export default class Scene extends Container {
 		super();
 		stage.onNodeChange(new Player().id, 'pid', this.id);
 	}
-	render(context) {
-		context.fillStyle = 'blue';
-		context.fillRect(this.x, this.y, 40, 40);
-	}
 }
