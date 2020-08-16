@@ -2,17 +2,12 @@ import * as APP from './app/index.js';
 import { canvas, stage, context } from './stage.js';
 import Scene from './main/index.js';
 import Player from './main/player.js';
-stage.node({});
-
-// APP.Event.CHECK_KEY_STATE = Symbol();
-// APP.Event.ADD_TO_STAGE = Symbol();
-// APP.Event.STEP = Symbol();
-// APP.Event.STAGE_SORT = Symbol();
+stage.node({}); //挂载根容器
 window.onload = function () {
 	document.body.appendChild(canvas);
 	//60帧的逻辑
 	APP.run(function (now) {
-		stage.onStep();
+		stage.onStep(); //检查渲染列表是否需要更新
 		let { nodes, renderNodes } = stage;
 		renderNodes.forEach((id) => nodes[id] && nodes[id].onAnimation && nodes[id].onAnimation());
 	}, 60);
@@ -22,8 +17,8 @@ window.onload = function () {
 		if (!needNodeUpdate) return;
 		stage.needNodeUpdate = false;
 		console.log('开始渲染');
-		context.setTransform(1, 0, 0, 1, 0, 0);
 		let { width, height } = canvas;
+		context.setTransform(1, 0, 0, 1, 0, 0);
 		context.clearRect(0, 0, width, height);
 		renderNodes.forEach((id) => nodes[id] && nodes[id].onStep && nodes[id].onStep(context));
 	}, 30);
