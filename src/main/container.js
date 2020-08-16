@@ -11,7 +11,8 @@ export default class Container {
 		this.scaleY = 1;
 		this.matrix = new APP.Matrix();
 	}
-	onMatrix(parentMatrix) {
+	onMatrix(parentMatrix = defaultMatrix) {
+		if (!this.needUpdate) return;
 		this.needUpdate = false;
 		Object.assign(this.matrix.element, parentMatrix.element);
 		this.matrix.translate(this.x, this.y);
@@ -22,6 +23,6 @@ export default class Container {
 	onStep(context) {
 		let parent = stage.nodes[this.pid];
 		if (!parent) return;
-		if (this.needUpdate) this.onMatrix(parent.matrix || defaultMatrix);
+		this.onMatrix(parent.matrix);
 	}
 }
