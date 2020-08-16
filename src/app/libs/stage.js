@@ -30,9 +30,9 @@ export default class Stage {
 	}
 	node(node) {
 		node.isContainer = true;
-		node.id = Stage.id ? ++Stage.id : (Stage.id = 1);
+		node.id = Stage.id ? ++Stage.id : (Stage.id = 1); //TODO 删除set
+		node.children = []; //TODO 删除set
 		node.pid = 0;
-		node.children = [];
 		node.needUpdate = true;
 		this.nodes[node.id] = node;
 		if (!this.id) this.id = node.id;
