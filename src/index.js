@@ -1,6 +1,9 @@
 import * as APP from './app/index.js';
 import { canvas, stage, context } from './stage.js';
 import Scene from './main/index.js';
+import Container from './main/container.js';
+stage.node({});
+
 // APP.Event.CHECK_KEY_STATE = Symbol();
 // APP.Event.ADD_TO_STAGE = Symbol();
 // APP.Event.STEP = Symbol();
@@ -43,15 +46,18 @@ window.onload = function () {
 			nodes[id].render(context, stage);
 		});
 	}, 60);
-	new Scene();
+	let scene = new Scene();
+	stage.onNodeChange(scene.id, 'pid', stage.id);
 
-	let dom1 = stage.node(new APP.Container(), stage);
+	let dom1 = new Container();
+	stage.onNodeChange(dom1.id, 'pid', stage.id);
 	dom1.render = function (context) {
 		context.fillStyle = 'red';
 		context.fillRect(this.x, this.y, 40, 40);
 	};
 
-	let dom2 = stage.node(new APP.Container(), stage);
+	let dom2 = new Container();
+	stage.onNodeChange(dom2.id, 'pid', stage.id);
 	dom2.render = function (context) {
 		context.fillStyle = 'green';
 		context.fillRect(this.x, this.y, 40, 40);
@@ -64,7 +70,7 @@ window.onload = function () {
 
 	//测试元素移除
 	setTimeout(function () {
-		stage.node(dom2);
+		stage.onNodeChange(dom2.id, 'pid', 0);
 	}, 6000);
 };
 console.log(APP);

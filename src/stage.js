@@ -9,7 +9,7 @@ function resize(canvas) {
 const canvas = document.createElement('canvas');
 window.addEventListener('resize', () => resize(canvas));
 resize(canvas);
-const stage = new APP.Stage(new APP.Container());
+const stage = new APP.Stage();
 const context = canvas.getContext('2d');
 export { canvas, stage, context };
 export default stage;

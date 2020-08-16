@@ -1,5 +1,5 @@
-import { Container } from '../app/index.js';
 import stage from '../stage.js';
+import Container from './container.js';
 export default class Player extends Container {
 	constructor() {
 		super();
