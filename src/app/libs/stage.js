@@ -54,7 +54,6 @@ export default class Stage {
 	}
 	onStep() {
 		if (!this.needUpdate) return;
-		console.log('更新渲染节点');
 		this.needUpdate = false;
 		let renderNodes = [];
 		this.onRenderNodesCheck(this.id, renderNodes);

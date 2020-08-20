@@ -1,5 +1,5 @@
-import * as APP from '../app/index.js';
-import stage from '../stage.js';
+import * as APP from './app/index.js';
+import stage from './stage.js';
 const defaultMatrix = new APP.Matrix();
 export default class Container {
 	constructor() {
@@ -18,7 +18,6 @@ export default class Container {
 		this.matrix.translate(this.x, this.y);
 		this.matrix.rotate(this.rotate);
 		this.matrix.scale(this.scaleX, this.scaleY);
-		console.log('更新矩阵', this.id);
 	}
 	onStep(context) {
 		let parent = stage.nodes[this.pid];
