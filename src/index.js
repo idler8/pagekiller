@@ -3,6 +3,7 @@ import stage from './stage.js';
 import Scene from './main/index.js';
 stage.node({}); //挂载根容器
 window.onload = function () {
+	stage.run();
 	document.body.appendChild(stage.canvas);
 	//60帧的逻辑
 	APP.run(function (now) {

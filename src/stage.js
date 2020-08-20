@@ -11,8 +11,7 @@ function resize(canvas) {
 	stage.resized = true;
 	stage.needNodeUpdate = true;
 }
-window.addEventListener('resize', () => resize(canvas));
-resize(canvas);
+
 stage.canvas = canvas;
 stage.context = context;
 stage.onRender = function () {
@@ -23,5 +22,9 @@ stage.onRender = function () {
 	context.setTransform(1, 0, 0, 1, 0, 0);
 	context.clearRect(0, 0, width, height);
 	renderNodes.forEach((id) => nodes[id] && nodes[id].onStep && nodes[id].onStep(context));
+};
+stage.run = function () {
+	window.addEventListener('resize', () => resize(canvas));
+	resize(canvas);
 };
 export default stage;
