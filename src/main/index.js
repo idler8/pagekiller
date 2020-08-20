@@ -1,12 +1,18 @@
 import stage from '../stage.js';
 import Container from '../container.js';
 import Home from './home.js';
-import Player from './player.js';
+import Player from './objects/player.js';
 export default class Scene extends Container {
 	constructor() {
 		super();
-		stage.onNodeChange(new Home().id, 'pid', this.id);
-		stage.onNodeChange(new Player().id, 'pid', this.id);
+		this.player = new Player();
+		this.onSceneChange(new Home());
+	}
+	onSceneChange(scene) {
+		stage.onNodeChange(this.player.id, 'pid', scene.id);
+		if (this.scene) stage.kill(this.scene);
+		stage.onNodeChange(scene.id, 'pid', this.id);
+		this.scene = scene;
 	}
 	onResize() {
 		this.x = stage.canvas.width / 2;
