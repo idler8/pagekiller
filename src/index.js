@@ -22,7 +22,7 @@ window.onload = function () {
 		stage.onRender();
 	}, 30);
 	//游戏业务逻辑
-	stage.onNodeChange(new Scene().id, 'pid', stage.id);
+	stage.put(new Scene(), stage);
 };
 console.log(APP);
 console.log(stage);

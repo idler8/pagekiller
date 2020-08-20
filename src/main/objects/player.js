@@ -26,6 +26,6 @@ export default class Player extends Container {
 		this.minY += this.speed;
 		if (this.minY >= 0) this.speed = -1;
 		if (this.minY <= -20) this.speed = 1;
-		stage.onNodeChange(this.id, 'needUpdate', true);
+		stage.update(this);
 	}
 }

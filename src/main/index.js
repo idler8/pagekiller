@@ -9,9 +9,9 @@ export default class Scene extends Container {
 		this.onSceneChange(new Home());
 	}
 	onSceneChange(scene) {
-		stage.onNodeChange(this.player.id, 'pid', scene.id);
+		stage.put(this.player, scene);
 		if (this.scene) stage.kill(this.scene);
-		stage.onNodeChange(scene.id, 'pid', this.id);
+		stage.put(scene, this);
 		this.scene = scene;
 	}
 	onResize() {
@@ -19,7 +19,7 @@ export default class Scene extends Container {
 		this.y = stage.canvas.height / 2;
 		let minWidth = Math.min(stage.canvas.width, stage.canvas.height);
 		this.scaleX = this.scaleY = minWidth / 1080;
-		stage.onNodeChange(this.id, 'needUpdate', true);
+		stage.update(this);
 		console.log(this);
 	}
 }

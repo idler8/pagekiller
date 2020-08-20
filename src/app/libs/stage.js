@@ -6,27 +6,13 @@ export default class Stage {
 		this.needUpdate = true; //是否需要整理渲染数组
 		this.needNodeUpdate = true; //是否需要重新渲染
 	}
-	onNodeChange(id, key, value) {
-		let node = this.nodes[id];
-		if (!node) return node;
-		let historyValue = node[key];
-		if (historyValue == value) return node;
-		node[key] = value;
-		if (key == 'pid') {
-			let historyParent = this.nodes[historyValue];
-			if (historyParent) {
-				let index = historyParent.children.indexOf(id);
-				if (index !== -1) historyParent.children.splice(index, 1);
-			}
-			let parent = this.nodes[value];
-			if (parent) parent.children.push(id);
-			this.needUpdate = true;
-		} else if (key == 'needUpdate') {
-			node.children.forEach((child) => this.onNodeChange(child, 'needUpdate', true));
-		}
-		this.onNodeChange(id, 'needUpdate', true);
+	update(node) {
+		let id = node.id || node;
+		node = this.nodes[id];
+		if (!node || node.needUpdate) return;
+		node.needUpdate = true;
+		node.children.forEach((child) => this.update(child));
 		this.needNodeUpdate = true;
-		return node;
 	}
 	node(node) {
 		node.isContainer = true;
@@ -37,10 +23,25 @@ export default class Stage {
 		this.nodes[node.id] = node;
 		if (!this.id) this.id = node.id;
 	}
+	put(node, target = 0) {
+		let id = node.id || node;
+		node = this.nodes[id];
+		if (!node) throw '还未挂载的对象';
+		let historyParent = this.nodes[node.pid];
+		if (historyParent) {
+			let index = historyParent.children.indexOf(id);
+			if (index !== -1) historyParent.children.splice(index, 1);
+		}
+		node.pid = target.id || target;
+		let parent = this.nodes[node.pid];
+		if (parent) parent.children.push(id);
+		this.needUpdate = true;
+		this.update(node);
+	}
 	kill(node) {
 		let id = node.id || node;
 		if (id == this.id || !this.nodes[id]) return;
-		this.onNodeChange(id, 'pid', 0);
+		this.put(id, 0);
 		delete this.nodes[id];
 	}
 	onRenderNodesCheck(id, renderNodes = []) {

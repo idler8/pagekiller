@@ -7,7 +7,7 @@ export default class Home extends Container {
 		let computer = new Computer();
 		computer.x = -1080 / 2 + 16 + 32 + 100;
 		computer.y = -1080 / 2 + 16 + 32 + 100;
-		stage.onNodeChange(computer.id, 'pid', this.id);
+		stage.put(computer, this);
 	}
 	onStep(context) {
 		super.onStep(context);
