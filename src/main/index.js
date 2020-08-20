@@ -1,3 +1,4 @@
+import * as APP from '../app/index.js';
 import stage from '../stage.js';
 import Container from '../container.js';
 import Home from './home.js';
@@ -9,6 +10,7 @@ export default class Scene extends Container {
 		this.onSceneChange(new Home());
 	}
 	onSceneChange(scene) {
+		this.player.x = this.player.y = 0;
 		stage.put(this.player, scene);
 		if (this.scene) stage.kill(this.scene);
 		stage.put(scene, this);
@@ -21,5 +23,26 @@ export default class Scene extends Container {
 		this.scaleX = this.scaleY = minWidth / 1080;
 		stage.update(this);
 		console.log(this);
+	}
+	onRender() {}
+	onAnimation() {
+		let needUpdate = false;
+		if (APP.keyState[37]) {
+			this.player.x -= 1;
+			needUpdate = true;
+		}
+		if (APP.keyState[39]) {
+			this.player.x += 1;
+			needUpdate = true;
+		}
+		if (APP.keyState[38]) {
+			this.player.y -= 1;
+			needUpdate = true;
+		}
+		if (APP.keyState[40]) {
+			this.player.y += 1;
+			needUpdate = true;
+		}
+		if (needUpdate) stage.update(this.player);
 	}
 }

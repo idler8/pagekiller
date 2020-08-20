@@ -44,6 +44,7 @@ export default class Stage {
 		this.put(id, 0);
 		delete this.nodes[id];
 	}
+
 	onRenderNodesCheck(id, renderNodes = []) {
 		let { nodes } = this;
 		if (!nodes[id]) return;
