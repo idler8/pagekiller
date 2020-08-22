@@ -37,6 +37,7 @@ export default class Stage {
 		if (parent) parent.children.push(id);
 		this.needUpdate = true;
 		this.update(node);
+		return node;
 	}
 	kill(node) {
 		let id = node.id || node;

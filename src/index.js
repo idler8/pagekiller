@@ -7,6 +7,7 @@ window.onload = function () {
 	document.body.appendChild(stage.canvas);
 	//60帧的逻辑
 	APP.run(function (now) {
+		//TODO 不在屏幕上的动画，也需要被操作到
 		stage.onStep(); //检查渲染列表是否需要更新
 		let { nodes, renderNodes } = stage;
 		let Resized = stage.resized;
