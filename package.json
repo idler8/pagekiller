@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "rollup -c"
+		"build": "rollup -c",
+		"release": "standard-version"
 	},
 	"author": "",
 	"license": "ISC",
@@ -18,7 +19,8 @@
 		"@commitlint/config-conventional": "^9.1.2",
 		"cz-conventional-changelog": "^3.2.0",
 		"husky": "^4.2.5",
-		"rollup-plugin-serve": "^1.0.3"
+		"rollup-plugin-serve": "^1.0.3",
+		"standard-version": "^9.0.0"
 	},
 	"config": {
 		"commitizen": {
